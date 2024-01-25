@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class DatabaseService {
 
     private final WebClient webClient;
+    private final String secretKey = "secret_DttkpH5a7QYGkZ1Fc7NkooLzTAj5LeXUfjbc8f1LFxY";
 
     public DatabaseService() {
         this.webClient = WebClient.builder()
@@ -25,11 +26,13 @@ public class DatabaseService {
             .build();
     }
 
-    private <T> T query(String databaseId, String secretKey, Class<T> responseType) {
+    private <T> T query(String databaseId, String secretKey, Class<T> responseType,
+        String jsonBody) {
         return webClient.post()
             .uri(databaseId + "/query")
             .header("Authorization", "Bearer " + secretKey)
             .header("Notion-Version", "2022-06-28")
+            .bodyValue(jsonBody)
             .retrieve()
             .bodyToMono(responseType)
             .block();
@@ -37,7 +40,7 @@ public class DatabaseService {
 
     public boolean isConnected(NotionConnectRequest request) {
         try {
-            query(request.databaseId(), request.secretKey(), String.class);
+            query(request.databaseId(), request.secretKey(), String.class, "{}");
         } catch (Exception e) {
             return false;
         }
@@ -45,11 +48,20 @@ public class DatabaseService {
     }
 
     public List<String> retrievePageIds(RetrievePageIdsRequest request) {
-        String secretKey = "secret_DttkpH5a7QYGkZ1Fc7NkooLzTAj5LeXUfjbc8f1LFxY";
+        String filter = "{"
+            + "\"filter\": {"
+            + "\"property\": \"status\","
+            + "\"select\": {"
+            + "\"equals\": \"UPLOADING\""
+            + "}"
+            + "}"
+            + "}";
+
         RetrievePageIdsResponse response = query(
             request.databaseId(),
             secretKey,
-            RetrievePageIdsResponse.class
+            RetrievePageIdsResponse.class,
+            filter
         );
 
         if (response != null && response.getResults() != null) {
