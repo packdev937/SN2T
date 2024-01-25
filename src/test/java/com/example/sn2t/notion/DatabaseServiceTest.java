@@ -1,21 +1,19 @@
 package com.example.sn2t.notion;
 
-import com.example.sn2t.notion.application.NotionService;
+import com.example.sn2t.notion.application.DatabaseService;
 import com.example.sn2t.notion.presentation.dto.NotionConnectRequest;
 import com.example.sn2t.notion.presentation.dto.RetrievePageIdsRequest;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-public class NotionServiceTest {
+@SpringBootTest
+public class DatabaseServiceTest {
 
-    private NotionService notionService;
-
-    @BeforeEach
-    void setUp() {
-        notionService = new NotionService();
-    }
+    @Autowired
+    private DatabaseService databaseService;
 
     @Test
     void Notion_연결이_되었다면_true를_반환한다() {
@@ -25,10 +23,10 @@ public class NotionServiceTest {
 
         // when
         NotionConnectRequest request = new NotionConnectRequest(databaseId, secretKey);
-        notionService.isConnected(request);
+        databaseService.isConnected(request);
 
         // given
-        Assertions.assertThat(notionService.isConnected(request)).isTrue();
+        Assertions.assertThat(databaseService.isConnected(request)).isTrue();
     }
 
     @Test
@@ -40,10 +38,10 @@ public class NotionServiceTest {
         NotionConnectRequest request = new NotionConnectRequest(wrongDatabaseId, secretKey);
 
         // when
-        notionService.isConnected(request);
+        databaseService.isConnected(request);
 
         // then
-        Assertions.assertThat(notionService.isConnected(request)).isFalse();
+        Assertions.assertThat(databaseService.isConnected(request)).isFalse();
     }
 
     @Test
@@ -53,9 +51,10 @@ public class NotionServiceTest {
         RetrievePageIdsRequest request = new RetrievePageIdsRequest(databaseId);
 
         // when
-        List<String> pageIds = notionService.retrievePageIds(request);
+        List<String> pageIds = databaseService.retrievePageIds(request);
 
         // then
         Assertions.assertThat(pageIds).hasSize(2);
     }
+
 }

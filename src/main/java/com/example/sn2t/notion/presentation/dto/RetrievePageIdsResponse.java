@@ -14,5 +14,4 @@ public class RetrievePageIdsResponse {
 
         private String id;
     }
-
 }
