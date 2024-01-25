@@ -1,7 +1,8 @@
 package com.example.sn2t.notion.domain.notion;
 
 public enum NotionProperties {
-    baseUrl("https://api.notion.com/v1/databases/");
+    databaseBaseUrl("https://api.notion.com/v1/databases/"),
+    blockBaseUrl("https://api.notion.com/v1/blocks/");
 
     NotionProperties(String description) {
         this.description = description;
