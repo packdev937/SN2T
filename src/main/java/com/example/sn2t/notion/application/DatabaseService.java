@@ -20,7 +20,7 @@ public class DatabaseService {
 
     public DatabaseService() {
         this.webClient = WebClient.builder()
-            .baseUrl(baseUrl.get())
+            .baseUrl(databaseBaseUrl.get())
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build();
     }
