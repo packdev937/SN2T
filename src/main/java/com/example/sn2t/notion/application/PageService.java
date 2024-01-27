@@ -21,9 +21,6 @@ public class PageService {
             .build();
     }
 
-    /*
-     * to는 바꾸고자 하는 상태로, "UNCOMPLETED", "UPLOADING" 또는 "COMPLETED"가 될 수 있습니다.
-     */
     public void updateStatusProperties(String pageId, String secretKey, String to) {
         String jsonBody = "{\n"
             + "  \"properties\": {\n"

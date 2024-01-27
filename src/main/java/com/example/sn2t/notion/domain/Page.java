@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Page {
 
     private List<Block> results;
+    private String title;
 
     public String toMarkdown() {
         StringBuilder markdown = new StringBuilder();
